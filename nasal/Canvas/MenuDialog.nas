@@ -43,8 +43,8 @@ var MenuDialog = {
         # Let the parent know who their child is.
         call(PersistentDialog.setChild, [obj, MenuDialog], obj.parents[1]);
 
-        # Enable correct handling of window positioning in the center of the screen.
-        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
+        obj._mouseX = 0;
+        obj._mouseY = 0;
 
         obj._createLayout();
 
@@ -70,6 +70,8 @@ var MenuDialog = {
     show: func {
         g_SubMenuDialog.hide();
 
+
+
         call(PersistentDialog.show, [], me);
     },
 
@@ -81,6 +83,17 @@ var MenuDialog = {
     #
     hide: func {
         call(PersistentDialog.hide, [], me);
+    },
+
+    #
+    # @return hash
+    #
+    setPositionByMouse: func {
+        me._mouseX = getprop('/devices/status/mice/mouse/x') or 35;
+        me._mouseY = getprop('/devices/status/mice/mouse/y') or 35;
+        me._window.setPosition(me._mouseX, me._mouseY);
+
+        return me;
     },
 
     #
@@ -100,7 +113,7 @@ var MenuDialog = {
                     var items = menu.items;
                     button.listen("clicked", func {
                         me.hide();
-                        g_SubMenuDialog.show(addonName, items);
+                        g_SubMenuDialog.show(addonName, items, me._mouseX, me._mouseY);
                     });
                 }();
 

@@ -21,6 +21,7 @@
     <menubar-items>
         <menu>
             <label>Add-ons</label>
+            <enabled type="bool">true</enabled>
 
             <item>
                 <label>Add-ons Menu...</label>
@@ -28,7 +29,7 @@
                 <binding>
                     <command>nasal</command>
                     <script><![CDATA[
-                        globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_MenuDialog.show();
+                        globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_MenuDialog.setPositionByMouse().show();
                     ]]></script>
                 </binding>
             </item>

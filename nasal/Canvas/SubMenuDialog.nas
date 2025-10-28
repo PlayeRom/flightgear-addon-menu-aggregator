@@ -40,9 +40,6 @@ var SubMenuDialog = {
         # Let the parent know who their child is.
         call(PersistentDialog.setChild, [obj, SubMenuDialog], obj.parents[1]);
 
-        # Enable correct handling of window positioning in the center of the screen.
-        call(PersistentDialog.setPositionOnCenter, [], obj.parents[1]);
-
         return obj;
     },
 
@@ -61,13 +58,16 @@ var SubMenuDialog = {
     #
     # @param  string  addonName
     # @param  vector  items
+    # @param  int  posX
+    # @param  int  posY
     # @return void
     # @override PersistentDialog
     #
-    show: func(addonName, items) {
+    show: func(addonName, items, posX, posY) {
         me._window.setTitle(addonName ~ " Menu");
 
         me._recalculateWindowHeight(items);
+        me._window.setPosition(posX, posY);
         me._createLayout(items);
 
         call(PersistentDialog.show, [], me);
@@ -84,6 +84,15 @@ var SubMenuDialog = {
     },
 
     #
+    # @return hash
+    #
+    _setPositionByMouse: func(x, y) {
+        me._window.setPosition(me._mouseX, me._mouseY);
+
+        return me;
+    },
+
+    #
     # @param  vector  items
     # @return void
     #
@@ -91,16 +100,6 @@ var SubMenuDialog = {
         var height = me._getHeight(items);
 
         me._window.setSize(me.WINDOW_WIDTH, height);
-
-        var heightWithBar = height + me._window._title_bar_height;
-
-        # Check whether the selector window does not go outside the screen at the bottom, if so, move it up
-        var posY = me.getPosY();
-        var screenH = me.getScreenHeight();
-        if (screenH - posY < heightWithBar) {
-            posY = screenH - heightWithBar;
-            me._window.setPosition(me.getPosX(), posY);
-        }
     },
 
     #
