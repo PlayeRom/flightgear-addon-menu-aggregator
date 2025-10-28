@@ -25,7 +25,7 @@ var AboutDialog = {
                 PersistentDialog.new(
                     width: 300,
                     height: 400,
-                    title: "About Canvas Skeleton",
+                    title: "About Add-ons Menu Aggregator",
                     resize: true,
                 ),
             ],
@@ -84,6 +84,7 @@ var AboutDialog = {
 
         me._vbox.addItem(me._getLabel(g_Addon.name));
         me._vbox.addItem(me._getLabel(sprintf("version %s", g_Addon.version.str())));
+        me._vbox.addItem(me._getLabel("2025-10-28"));
         me._vbox.addStretch(1);
         me._vbox.addItem(me._getLabel("Written by:"));
 
