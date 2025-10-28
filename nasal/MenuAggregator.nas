@@ -320,12 +320,7 @@ var MenuAggregator = {
                         Log.print('addon.menu[', i, '].items[', j, '].bindings[', k, '].command = ', binding.command);
 
                         foreach (var param; keys(binding.params)) {
-                            # var value = binding.params[param];
-                            # if (isscalar(value)) {
                             Log.print('addon.menu[', i, '].items[', j, '].bindings[', k, '].params[', param ,'] = ', binding.params[param]);
-                            # } else {
-                                # Log.print('addon.menu[', i, '].items[', j, '].bindings[', k, '].params[', param ,'] = NO SCALAR!');
-                            # }
                         }
                     }
                 }
