@@ -14,6 +14,11 @@
 # then removes the menu items from all add-ons.
 #
 var MenuAggregator = {
+    #
+    # Constructor.
+    #
+    # @return hash
+    #
     new: func {
         var obj = {
             parents: [
@@ -25,7 +30,6 @@ var MenuAggregator = {
 
         obj._aggregate();
         obj._removeMenus();
-
         obj._overrideGuiEnableMenu();
 
         obj._printLogMenuStructure();
@@ -33,14 +37,25 @@ var MenuAggregator = {
         return obj;
     },
 
+    #
+    # Destructor.
+    #
+    # @return void
+    #
     del: func {
         #
     },
 
+    #
+    # @return vector
+    #
     getMenus: func {
         return me._menus;
     },
 
+    #
+    # @return int
+    #
     getMenuCount: func {
         var count = 0;
         foreach (var addon; me._menus) {
@@ -50,6 +65,11 @@ var MenuAggregator = {
         return count;
     },
 
+    #
+    # Aggregate all add-ons menu to own structure.
+    #
+    # @return void
+    #
     _aggregate: func {
         foreach (var addon; addons.registeredAddons()) {
             var addonMenu = me._loadMenuBarItemsXml(addon);
@@ -59,6 +79,10 @@ var MenuAggregator = {
         }
     },
 
+    #
+    # @param  ghost  addon  The addons.Addon object.
+    # @return hash|nil
+    #
     _loadMenuBarItemsXml: func(addon) {
         if (addon.id == g_Addon.id) {
             return nil; # ignore yourself
@@ -86,26 +110,11 @@ var MenuAggregator = {
             }
 
             var menu = {
-                label: '',
-                name: nil,
-                enabled: true,
-                items: [],
+                label  : me._readValue(menuXml, 'label', ''),
+                name   : me._readValue(menuXml, 'name', nil),
+                enabled: me._readValue(menuXml, 'enabled', true),
+                items  : [],
             };
-
-            var label = menuXml.getChild('label');
-            if (label != nil) {
-                menu.label = label.getValue();
-            }
-
-            var name = menuXml.getChild('name');
-            if (name != nil) {
-                menu.name = name.getValue();
-            }
-
-            var enabled = menuXml.getChild('enabled');
-            if (enabled != nil) {
-                menu.enabled = enabled.getBoolValue();
-            }
 
             foreach (var itemXml; menuXml.getChildren('item')) {
                 if (itemXml == nil) {
@@ -113,26 +122,11 @@ var MenuAggregator = {
                 }
 
                 var item = {
-                    label: '',
-                    name: nil,
-                    enabled: true,
+                    label   : me._readValue(itemXml, 'label', ''),
+                    name    : me._readValue(itemXml, 'name', nil),
+                    enabled : me._readValue(itemXml, 'enabled', true),
                     bindings: [],
                 };
-
-                var label = itemXml.getChild('label');
-                if (label != nil) {
-                    item.label = label.getValue();
-                }
-
-                var name = itemXml.getChild('name');
-                if (name != nil) {
-                    item.name = name.getValue();
-                }
-
-                var enabled = itemXml.getChild('enabled');
-                if (enabled != nil) {
-                    item.enabled = enabled.getBoolValue();
-                }
 
                 foreach (var bindingXml; itemXml.getChildren('binding')) {
                     if (bindingXml == nil) {
@@ -173,6 +167,26 @@ var MenuAggregator = {
         return addonMenu;
     },
 
+    #
+    # @param  ghost  node  Parent node.
+    # @param  string  tag  Child tag name to read.
+    # @param  scalar|nil  default  Default value if child not exists.
+    # @return scalar|nil
+    #
+    _readValue: func(node, tag, default = nil) {
+        var childNode = node.getChild(tag);
+        if (childNode != nil) {
+            return tag == 'enabled'
+                ? childNode.getBoolValue()
+                : childNode.getValue();
+        }
+
+        return default;
+    },
+
+    #
+    # @return void
+    #
     _removeMenus: func {
         var redrawNeeded = false;
 
