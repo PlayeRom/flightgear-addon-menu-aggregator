@@ -20,7 +20,6 @@
     </meta>
 
     <addon>
-        <!-- TODO: change the identifier to your own unique name throughout the project. -->
         <identifier type="string">org.flightgear.addons.MenuAggregator</identifier>
         <name type="string">Add-ons Menu Aggregator</name>
         <version type="string">1.0.0</version>

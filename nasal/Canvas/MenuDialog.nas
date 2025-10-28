@@ -70,8 +70,6 @@ var MenuDialog = {
     show: func {
         g_SubMenuDialog.hide();
 
-
-
         call(PersistentDialog.show, [], me);
     },
 
@@ -106,19 +104,23 @@ var MenuDialog = {
             foreach (var menu; addonMenu.menus) {
                 var button = canvas.gui.widgets.Button.new(me._group)
                     .setText(menu.label)
-                    .setEnabled(menu.enabled);
-
-                func {
-                    var addonName = addonMenu.name;
-                    var items = menu.items;
-                    button.listen("clicked", func {
-                        me.hide();
-                        g_SubMenuDialog.show(addonName, items, me._mouseX, me._mouseY);
-                    });
-                }();
+                    .setEnabled(menu.enabled)
+                    .listen("clicked", me._clickedCallback(addonMenu.name, menu.items));
 
                 me._vbox.addItem(button);
             }
         }
+    },
+
+    #
+    # @param  string  addonName
+    # @param  vector  items
+    # @return func
+    #
+    _clickedCallback: func(addonName, items) {
+        return func {
+            me.hide();
+            g_SubMenuDialog.show(addonName, items, me._mouseX, me._mouseY);
+        };
     },
 };

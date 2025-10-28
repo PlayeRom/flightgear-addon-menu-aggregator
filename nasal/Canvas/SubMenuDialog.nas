@@ -112,13 +112,15 @@ var SubMenuDialog = {
         foreach (var item; items) {
             if (size(item.bindings)) {
                 height += MenuDialog.ITEM_H;
-            } else {
-                if (string.match(item.label, '---*')) {
-                    height += 5 + 7;
-                } else {
-                    height += MenuDialog.ITEM_H;
-                }
+                continue;
             }
+
+            if (string.match(item.label, '---*')) {
+                height += 5 + 7;
+                continue;
+            }
+
+            height += MenuDialog.ITEM_H;
         }
 
         return height + (me.PADDING * 2);
@@ -136,33 +138,25 @@ var SubMenuDialog = {
             if (size(item.bindings)) {
                 var button = canvas.gui.widgets.Button.new(me._group)
                     .setText(item.label)
-                    .setEnabled(item.enabled);
-
-                func {
-                    var bindings = item.bindings;
-                    button.listen('clicked', func {
-                        me.hide();
-                        g_MenuDialog.hide();
-                        foreach (var binding; bindings) {
-                            fgcommand(binding.command, props.Node.new(binding.params));
-                        }
-                    });
-                }();
+                    .setEnabled(item.enabled)
+                    .listen('clicked', me._clickedCallback(item.bindings));
 
                 me._vbox.addItem(button);
-            } else {
-                if (string.match(item.label, '---*')) {
-                    me._vbox.addItem(canvas.gui.widgets.HorizontalRule.new(me._group));
-                } else {
-                    var label = canvas.gui.widgets.Label.new(me._group)
-                        .setText(item.label)
-                        .setEnabled(item.enabled);
-
-                    label.setTextAlign('center');
-
-                    me._vbox.addItem(label);
-                }
+                continue;
             }
+
+            if (string.match(item.label, '---*')) {
+                me._vbox.addItem(canvas.gui.widgets.HorizontalRule.new(me._group));
+                continue;
+            }
+
+            var label = canvas.gui.widgets.Label.new(me._group)
+                .setText(item.label)
+                .setEnabled(item.enabled);
+
+            label.setTextAlign('center');
+
+            me._vbox.addItem(label);
         }
 
         var backBtn = canvas.gui.widgets.Button.new(me._group)
@@ -174,5 +168,19 @@ var SubMenuDialog = {
 
         me._vbox.addItem(canvas.gui.widgets.HorizontalRule.new(me._group));
         me._vbox.addItem(backBtn);
+    },
+
+    #
+    # @param  vector  bindings
+    # @return func
+    #
+    _clickedCallback: func(bindings) {
+        return func {
+            me.hide();
+            g_MenuDialog.hide();
+            foreach (var binding; bindings) {
+                fgcommand(binding.command, props.Node.new(binding.params));
+            }
+        };
     },
 };
