@@ -13,6 +13,10 @@ The "Add-ons Menu Aggregator" automatically aggregates menu entries from all ins
 * **Automatic operation** – after installation, it requires no configuration; it automatically detects available add-ons and their menu positions.
 * **Clarity** – even with a large number of add-ons installed, FlightGear's main menu remains clear and consistent.
 
+## Disadvantages
+
+* You need to make 2 more clicks to perform an action from the add-on menu.
+
 ## How it works
 
 When FlightGear starts, this add-on scans all installed extensions (add-ons) and captures their menu definitions. It then creates a new "Add-ons" section in the main menu, grouping all found entries by source. The original add-ons menu items are then removed from the FlightGear menu bar. All original actions (Nasal commands, XML commands, etc.) continue to function.
