@@ -32,6 +32,8 @@ var MenuAggregator = {
         obj._removeMenus();
         obj._overrideGuiEnableMenu();
 
+        MultiKeyCmd.new().add(obj._menus);
+
         obj._printLogMenuStructure();
 
         return obj;

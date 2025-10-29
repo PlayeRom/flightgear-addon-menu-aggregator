@@ -32,7 +32,7 @@ var MenuDialog = {
             parents: [
                 MenuDialog,
                 PersistentDialog.new(
-                    width: 250,
+                    width: 300,
                     height: height,
                     title: "Add-ons Menu",
                     resize: true,
@@ -46,7 +46,11 @@ var MenuDialog = {
         obj._mouseX = 0;
         obj._mouseY = 0;
 
+        obj._shortcuts = {};
+
         obj._createLayout();
+
+        obj._handleKeys();
 
         return obj;
     },
@@ -100,14 +104,27 @@ var MenuDialog = {
     _createLayout: func {
         me._vbox.setContentsMargins(me.PADDING, me.PADDING, me.PADDING, me.PADDING);
 
+        var id = 1;
+
         foreach (var addonMenu; g_MenuAggregator.getMenus()) {
             foreach (var menu; addonMenu.menus) {
+                var shortcut = id > 10
+                    ? ''
+                    : ' <' ~ (id == 10 ? 0 : id) ~ '>';
+
                 var button = canvas.gui.widgets.Button.new(me._group)
-                    .setText(menu.label)
+                    .setText(menu.label ~ shortcut)
                     .setEnabled(menu.enabled)
                     .listen("clicked", me._clickedCallback(addonMenu.name, menu.items));
 
                 me._vbox.addItem(button);
+
+                if (id < 11) {
+                    var key = id == 10 ? 0 : id;
+                    me._shortcuts[key ~ ''] = me._clickedCallback(addonMenu.name, menu.items);
+                }
+
+                id += 1;
             }
         }
     },
@@ -122,5 +139,32 @@ var MenuDialog = {
             me.hide();
             g_SubMenuDialog.show(addonName, items, me._mouseX, me._mouseY);
         };
+    },
+
+    #
+    # Handle keydown listener for window.
+    #
+    # @return void
+    #
+    _handleKeys: func {
+        me._window.addEventListener('keydown', func(event) {
+            if (   event.key == '1'
+                or event.key == '2'
+                or event.key == '3'
+                or event.key == '4'
+                or event.key == '5'
+                or event.key == '6'
+                or event.key == '7'
+                or event.key == '8'
+                or event.key == '9'
+                or event.key == '0'
+            ) {
+                if (contains(me._shortcuts, event.key)) {
+                    me._shortcuts[event.key]();
+                }
+            } elsif (event.key == 'Backspace') {
+                me.hide();
+            }
+        });
     },
 };

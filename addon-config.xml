@@ -19,4 +19,20 @@
             </org.flightgear.addons.MenuAggregator>
         </by-id>
     </addons>
+    <input>
+        <keyboard>
+            <multikey>
+                <key n="109">
+                    <name>m</name>
+                    <desc>Add-ons Menu</desc>
+                    <binding>
+                        <command>nasal</command>
+                        <script><![CDATA[
+                            globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_MenuDialog.setPositionByMouse().show();
+                        ]]></script>
+                    </binding>
+                </key>
+            </multikey>
+        </keyboard>
+    </input>
 </PropertyList>

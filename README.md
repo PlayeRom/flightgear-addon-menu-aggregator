@@ -15,10 +15,30 @@ The "Add-ons Menu Aggregator" automatically aggregates menu entries from all ins
 
 ## Disadvantages
 
-* You need to make 2 more clicks to perform an action from the add-on menu.
+* You need to make 2 more clicks to perform an action from the add-on menu. To solve this problem see [Keyboard shortcuts](#keyboard-shortcuts) section in this document.
 
 ## How it works
 
 When FlightGear starts, this add-on scans all installed extensions (add-ons) and captures their menu definitions. It then creates a new "Add-ons" section in the main menu, grouping all found entries by source. The original add-ons menu items are then removed from the FlightGear menu bar. All original actions (Nasal commands, XML commands, etc.) continue to function.
 
 After selecting "Add-ons" -> "Add-ons Menu...", a new dialog box opens with the main menu items for all add-ons. The order of these items follows the order of the add-ons' list in the Launcher. Then, clicking on one of the main items opens another dialog box with the menu items for that specific add-on.
+
+## Keyboard shortcuts
+
+Because this add-on adds two extra clicks to the add-on's action, it includes multi-key commands. The basic command is:
+
+`:m` `Enter`, which opens the main add-on menu.
+
+You can also launch the menu for a specific add-on. Multi-key commands for specific add-ons always contain two additional characters and are built dynamically based on the following rules:
+
+1. If the add-on has at least two words in its name, the first characters of those two words are used.
+2. If the add-on has one word in its name, the first two characters of that word are used.
+
+Examples:
+
+* `:mwr` – opens the "Which Runway" add-on menu.
+* `:mlo` – opens the "Logbook" add-on menu, etc.
+
+To see suggestions while typing a multi-key command, press the `Tab` key.
+
+Dialog boxes also have their own keyboard shortcuts. Each menu item can be activated using the keys `1`-`9` and `0`. The `Backspace` key represents clicking the "< Back" button. The `Esc` key closes the menu window.

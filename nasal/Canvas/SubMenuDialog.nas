@@ -16,7 +16,7 @@ var SubMenuDialog = {
     #
     # Constants:
     #
-    WINDOW_WIDTH: 250,
+    WINDOW_WIDTH: 300,
     PADDING: 10,
 
     #
@@ -39,6 +39,10 @@ var SubMenuDialog = {
 
         # Let the parent know who their child is.
         call(PersistentDialog.setChild, [obj, SubMenuDialog], obj.parents[1]);
+
+        obj._shortcuts = {};
+
+        obj._handleKeys();
 
         return obj;
     },
@@ -74,6 +78,22 @@ var SubMenuDialog = {
     },
 
     #
+    # @param  int  index  Add-on index in menu structure.
+    # @return void
+    #
+    showByMultiKey: func(index) {
+        g_MenuDialog.hide();
+
+        var menus = g_MenuAggregator.getMenus();
+        var addon = menus[index];
+        var items = addon.menus[0].items; # Simplification: multi-key only activates the first menu
+        var mouseX = getprop('/devices/status/mice/mouse/x') or 35;
+        var mouseY = getprop('/devices/status/mice/mouse/y') or 35;
+
+        me.show(addon.name, items, mouseX, mouseY);
+    },
+
+    #
     # Hide the dialog.
     #
     # @return void
@@ -81,15 +101,6 @@ var SubMenuDialog = {
     #
     hide: func {
         call(PersistentDialog.hide, [], me);
-    },
-
-    #
-    # @return hash
-    #
-    _setPositionByMouse: func(x, y) {
-        me._window.setPosition(me._mouseX, me._mouseY);
-
-        return me;
     },
 
     #
@@ -134,14 +145,29 @@ var SubMenuDialog = {
         me._vbox.clear();
         me._vbox.setContentsMargins(me.PADDING, me.PADDING, me.PADDING, me.PADDING);
 
+        me._shortcuts = {};
+
+        var id = 1;
+
         foreach (var item; items) {
             if (size(item.bindings)) {
+                var shortcut = id > 10
+                    ? ''
+                    : ' <' ~ (id == 10 ? 0 : id) ~ '>';
+
                 var button = canvas.gui.widgets.Button.new(me._group)
-                    .setText(item.label)
+                    .setText(item.label ~ shortcut)
                     .setEnabled(item.enabled)
                     .listen('clicked', me._clickedCallback(item.bindings));
 
                 me._vbox.addItem(button);
+
+                if (id < 11) {
+                    var key = id == 10 ? 0 : id;
+                    me._shortcuts[key ~ ''] = me._clickedCallback(item.bindings);
+                }
+
+                id += 1;
                 continue;
             }
 
@@ -161,10 +187,7 @@ var SubMenuDialog = {
 
         var backBtn = canvas.gui.widgets.Button.new(me._group)
             .setText('< Back')
-            .listen('clicked', func {
-                me.hide();
-                g_MenuDialog.show();
-            });
+            .listen('clicked', func me._back());
 
         me._vbox.addItem(canvas.gui.widgets.HorizontalRule.new(me._group));
         me._vbox.addItem(backBtn);
@@ -182,5 +205,40 @@ var SubMenuDialog = {
                 fgcommand(binding.command, props.Node.new(binding.params));
             }
         };
+    },
+
+    #
+    # @return void
+    #
+    _back: func {
+        me.hide();
+        g_MenuDialog.show();
+    },
+
+    #
+    # Handle keydown listener for window.
+    #
+    # @return void
+    #
+    _handleKeys: func {
+        me._window.addEventListener('keydown', func(event) {
+            if (   event.key == '1'
+                or event.key == '2'
+                or event.key == '3'
+                or event.key == '4'
+                or event.key == '5'
+                or event.key == '6'
+                or event.key == '7'
+                or event.key == '8'
+                or event.key == '9'
+                or event.key == '0'
+            ) {
+                if (contains(me._shortcuts, event.key)) {
+                    me._shortcuts[event.key]();
+                }
+            } elsif (event.key == 'Backspace') {
+                me._back();
+            }
+        });
     },
 };
