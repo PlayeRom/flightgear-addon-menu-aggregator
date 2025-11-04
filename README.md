@@ -1,5 +1,5 @@
 "Add-ons Menu Aggregator" for FlightGear
-=====================================
+========================================
 
 The "Add-ons Menu Aggregator" add-on solves the problem of increasing menu clutter in FlightGear, which occurs after installing multiple add-ons. Each add-on can add its own items to the main menu, causing it to become very large and, at low resolutions, extend beyond the screen. This makes it difficult for users to find functions related to specific add-ons, and the menu itself becomes unreadable.
 
