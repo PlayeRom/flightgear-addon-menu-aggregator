@@ -16,33 +16,36 @@ var MultiKeyCmd = {
     #
     # Constructor.
     #
+    # @param  vector  menus
     # @return hash
     #
-    new: func {
+    new: func(menus) {
         var obj = {
             parents: [
                 MultiKeyCmd,
             ],
+            _menus: menus,
         };
 
         obj._firstChar = 'm';
 
         obj._desc = {};
 
+        obj._add();
+
         return obj;
     },
 
     #
-    # @param  vector  menus
     # @return void
     #
-    add: func(menus) {
+    _add: func() {
         me._desc = {};
 
         var isReloadNeeded = false;
 
-        forindex (var index; menus) {
-            var addon = menus[index];
+        forindex (var index; me._menus) {
+            var addon = me._menus[index];
             var sequence = me._getSequencyByAddonName(addon.name);
             if (sequence == nil) {
                 continue;
@@ -118,7 +121,7 @@ var MultiKeyCmd = {
         setprop(path ~ '/binding/command', 'nasal');
         setprop(
             path ~ '/binding/script',
-            "globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_SubMenuDialog.showByMultiKey(" ~ index ~ ");"
+            "globals['__addon[" ~ g_Addon.id ~ "]__'].g_SubMenuDialog.showByIndex(" ~ index ~ ");"
         );
 
         return path;

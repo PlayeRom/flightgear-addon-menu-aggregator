@@ -18,6 +18,7 @@ var SubMenuDialog = {
     #
     WINDOW_WIDTH: 300,
     PADDING: 10,
+    ITEM_H: 28 + 7, # 28 button height, +7 for margins
 
     #
     # Constructor.
@@ -81,9 +82,7 @@ var SubMenuDialog = {
     # @param  int  index  Add-on index in menu structure.
     # @return void
     #
-    showByMultiKey: func(index) {
-        g_MenuDialog.hide();
-
+    showByIndex: func(index) {
         var menus = g_MenuAggregator.getMenus();
         var addon = menus[index];
         var items = addon.menus[0].items; # Simplification: multi-key only activates the first menu
@@ -118,11 +117,11 @@ var SubMenuDialog = {
     # @return int
     #
     _getHeight: func(items) {
-        var height = MenuDialog.ITEM_H;; # back button
+        var height = 0;
 
         foreach (var item; items) {
             if (size(item.bindings)) {
-                height += MenuDialog.ITEM_H;
+                height += me.ITEM_H;
                 continue;
             }
 
@@ -131,7 +130,7 @@ var SubMenuDialog = {
                 continue;
             }
 
-            height += MenuDialog.ITEM_H;
+            height += me.ITEM_H;
         }
 
         return height + (me.PADDING * 2);
@@ -184,13 +183,6 @@ var SubMenuDialog = {
 
             me._vbox.addItem(label);
         }
-
-        var backBtn = canvas.gui.widgets.Button.new(me._group)
-            .setText('< Back')
-            .listen('clicked', func me._back());
-
-        me._vbox.addItem(canvas.gui.widgets.HorizontalRule.new(me._group));
-        me._vbox.addItem(backBtn);
     },
 
     #
@@ -200,19 +192,10 @@ var SubMenuDialog = {
     _clickedCallback: func(bindings) {
         return func {
             me.hide();
-            g_MenuDialog.hide();
             foreach (var binding; bindings) {
                 fgcommand(binding.command, props.Node.new(binding.params));
             }
         };
-    },
-
-    #
-    # @return void
-    #
-    _back: func {
-        me.hide();
-        g_MenuDialog.show();
     },
 
     #
@@ -236,8 +219,6 @@ var SubMenuDialog = {
                 if (contains(me._shortcuts, event.key)) {
                     me._shortcuts[event.key]();
                 }
-            } elsif (event.key == 'Backspace') {
-                me._back();
             }
         });
     },

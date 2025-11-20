@@ -32,7 +32,8 @@ var MenuAggregator = {
         obj._removeMenus();
         obj._overrideGuiEnableMenu();
 
-        MultiKeyCmd.new().add(obj._menus);
+        MultiKeyCmd.new(obj._menus);
+        MainMenu.new(obj._menus);
 
         obj._printLogMenuStructure();
 
@@ -240,7 +241,7 @@ var MenuAggregator = {
     _overrideGuiEnableMenu: func {
         gui.menuEnable = func(searchName, state) {
             # Fist search in my structure
-            var namespace = globals['__addon[org.flightgear.addons.MenuAggregator]__'];
+            var namespace = globals['__addon[' ~ g_Addon.id ~ ']__'];
             if (namespace.g_MenuAggregator != nil) {
                 namespace.g_MenuAggregator.menuEnable(searchName, state);
             }

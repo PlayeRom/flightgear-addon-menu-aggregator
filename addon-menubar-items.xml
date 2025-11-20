@@ -21,28 +21,8 @@
     <menubar-items>
         <menu>
             <label>Add-ons</label>
+            <name>add-ons-aggregator-menu</name>
             <enabled type="bool">true</enabled>
-
-            <item>
-                <label>Add-ons Menu...</label>
-                <name>menu-aggregator-addons-dialog</name>
-                <binding>
-                    <command>nasal</command>
-                    <script><![CDATA[
-                        globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_MenuDialog.setPositionByMouse().show();
-                    ]]></script>
-                </binding>
-            </item>
-            <item>
-                <label>About...</label>
-                <name>menu-aggregator-about-dialog</name>
-                <binding>
-                    <command>nasal</command>
-                    <script><![CDATA[
-                        globals['__addon[org.flightgear.addons.MenuAggregator]__'].g_AboutDialog.show();
-                    ]]></script>
-                </binding>
-            </item>
 
             <!--
             FOR DEVELOPMENT ONLY!

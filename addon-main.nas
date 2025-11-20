@@ -16,11 +16,6 @@ io.include('framework/nasal/Application.nas');
 var g_MenuAggregator = nil;
 
 #
-# Global object of menu dialog.
-#
-var g_MenuDialog = nil;
-
-#
 # Global object of sub-menu dialog.
 #
 var g_SubMenuDialog = nil;
@@ -49,7 +44,6 @@ var main = func(addon) {
         })
         .hookOnInitCanvas(func {
             g_MenuAggregator = MenuAggregator.new();
-            g_MenuDialog = MenuDialog.new();
             g_SubMenuDialog = SubMenuDialog.new();
             g_AboutDialog = AboutDialog.new();
         })
@@ -79,10 +73,6 @@ var unload = func(addon) {
 
     if (g_SubMenuDialog != nil) {
         g_SubMenuDialog.del();
-    }
-
-    if (g_MenuDialog != nil) {
-        g_MenuDialog.del();
     }
 
     if (g_MenuAggregator != nil) {
