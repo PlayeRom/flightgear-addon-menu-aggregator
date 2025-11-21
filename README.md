@@ -15,17 +15,17 @@ The "Add-ons Menu Aggregator" automatically aggregates menu entries from all ins
 
 ## Disadvantages
 
-* You need to make 2 more clicks to perform an action from the add-on menu. To solve this problem see [Keyboard shortcuts](#keyboard-shortcuts) section in this document.
+* You need to make 1 more click to perform an action from the add-on menu. See the [Keyboard shortcuts](#keyboard-shortcuts) section in this document.
 
 ## How it works
 
 When FlightGear starts, this add-on scans all installed extensions (add-ons) and captures their menu definitions. It then creates a new "Add-ons" section in the main menu, grouping all found entries by source. The original add-ons menu items are then removed from the FlightGear menu bar. All original actions (Nasal commands, XML commands, etc.) continue to function.
 
-After selecting "Add-ons" -> "Add-ons Menu...", a new dialog box opens with the main menu items for all add-ons. The order of these items follows the order of the add-ons' list in the Launcher. Then, clicking on one of the main items opens another dialog box with the menu items for that specific add-on.
+Clicking "Add-ons" in main menu will open a submenu with items from all add-ons that would add items to the main menu. The order of these items matches the order in the add-ons list in the Launcher. Clicking on one of the main items then opens a dialog box with menu items for that specific add-on.
 
 ## Keyboard shortcuts
 
-Because this add-on adds two extra clicks to the add-on's action, it includes multi-key commands. The basic command is:
+Because this add-on adds one extra click to the add-on's action, it includes multi-key commands. The basic command is:
 
 `:m` `Enter`, which opens the main add-on menu.
 
@@ -41,4 +41,4 @@ Examples:
 
 To see suggestions while typing a multi-key command, press the `Tab` key.
 
-Dialog boxes also have their own keyboard shortcuts. Each menu item can be activated using the keys `1`-`9` and `0`. The `Backspace` key represents clicking the "< Back" button. The `Esc` key closes the menu window.
+Dialog boxes also have their own keyboard shortcuts. Each menu item can be activated using the keys `1`-`9` and `0`. The `Esc` key closes the menu window.
