@@ -42,11 +42,14 @@ var main = func(addon) {
                 '/framework/nasal/Canvas/BaseDialogs/TransientDialog.nas',
             ];
         })
-        .hookOnInitCanvas(func {
-            g_MenuAggregator = MenuAggregator.new();
-            g_SubMenuDialog = SubMenuDialog.new();
-            g_AboutDialog = AboutDialog.new();
-        })
+        .hookOnInitCanvas(
+            callback: func {
+                g_MenuAggregator = MenuAggregator.new();
+                g_SubMenuDialog = SubMenuDialog.new();
+                g_AboutDialog = AboutDialog.new();
+            },
+            delay: 6,
+        )
         .create(addon);
 };
 
