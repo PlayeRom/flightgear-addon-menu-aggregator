@@ -23,6 +23,8 @@ When FlightGear starts, this add-on scans all installed extensions (add-ons) and
 
 Clicking "Add-ons" in main menu will open a submenu with items from all add-ons that would add items to the main menu. The order of these items matches the order in the add-ons list in the Launcher. Clicking on one of the main items then opens a dialog box with menu items for that specific add-on.
 
+![Menu](docs/menu.png)
+
 ## Keyboard shortcuts
 
 Because this add-on adds one extra click to the add-on's action, it includes multi-key commands. The basic command is:
